@@ -1,8 +1,8 @@
 # Rachel Leslie — Link Site
 
-Wedding-style link-in-bio page for Rachel Leslie. Two photos cross-fade as you scroll, with a glassmorphic links card hovering centered the whole time.
+A simple link-in-bio page. One photo as a blurred background, a glassmorphic card with the link buttons centered on top. Below the fold, photos stack vertically as you scroll.
 
-**Stack:** Single `index.html` + custom CSS (no Tailwind). Zero build step. Pure HTML/CSS/JS — opens in any browser, deploys to any static host.
+**Stack:** Single `index.html` + custom CSS. Zero build step. Pure HTML/CSS/JS — opens in any browser, deploys to any static host.
 
 ## Local preview
 
@@ -10,19 +10,6 @@ Wedding-style link-in-bio page for Rachel Leslie. Two photos cross-fade as you s
 python3 -m http.server 8765
 # open http://localhost:8765/
 ```
-
-## How the scroll-driven cross-fade works
-
-The page is 3 viewports tall (the "stage"). Two photo layers stack on top of each other inside a `position: fixed` background container. As you scroll through the stage:
-
-- **0% to 33%** — Photo A is fully visible
-- **33% to 66%** — Photo A fades out, Photo B fades in
-- **66% to 100%** — Photo B is fully visible
-- **85% onward** — the floating card fades out so the gallery appears cleanly below
-
-The links card itself is `position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%)` — so it hovers in the center of the viewport the entire time, like a wedding-site intro.
-
-Three pips on the right edge light up to show which photo you're currently on.
 
 ## File map
 
@@ -36,32 +23,35 @@ rachelleslie-site/
 │   │   ├── bsky-256.png        # official Bluesky butterfly
 │   │   └── fanvue.png          # smaller Fanvue favicon variant
 │   └── photos/                 # drop your photos here
-│       ├── bg.jpg              # Photo A — first background photo
-│       ├── bg-2.jpg            # Photo B — second photo, cross-fades in
+│       ├── bg.jpg              # background photo (blurred behind the card)
 │       ├── avatar.jpg          # profile pic in the gradient ring
-│       ├── photo-1.jpg         # gallery card 1
-│       ├── photo-2.jpg         # gallery card 2
-│       ├── photo-3.jpg         # gallery card 3
-│       ├── photo-4.jpg         # gallery card 4
-│       ├── photo-5.jpg         # gallery card 5
-│       ├── photo-6.jpg         # gallery card 6
-│       ├── photo-7.jpg         # gallery card 7
-│       └── photo-8.jpg         # gallery card 8
+│       ├── photo-1.jpg         # gallery photo 1
+│       ├── photo-2.jpg         # gallery photo 2
+│       ├── photo-3.jpg         # gallery photo 3
+│       ├── ...
+│       └── photo-10.jpg        # gallery photo 10
 └── README.md
 ```
 
-## How to add more photos
+## How it works
 
-**Hero cross-fade photos** — drop two JPGs named `bg.jpg` and `bg-2.jpg`. They cross-fade on scroll. To add a third photo, copy the existing photo-layer div in `index.html` and adjust the JS in the `<script>` block.
+**Background.** A single photo (`bg.jpg`) is fixed to the viewport and blurred slightly. The links card sits centered on top of it.
 
-**Gallery cards** — drop JPGs as `photo-1.jpg` through `photo-N.jpg`. To add more, add a matching `<div class="photo-card" data-n="N">` to the `.photo-stack` block and extend the `Array.from({length: N})` in the script.
+**Card.** Glassmorphic, centered, holds the avatar, name, handle, bio, stats, and three link buttons (Fanvue, Instagram, Bluesky). Stays put while you scroll past it.
 
-Recommended sizes:
-- Hero photos: 1920px wide, optimized JPGs (300-700KB each)
-- Avatar: square, 800x800 minimum
-- Gallery cards: square or 4:5 portrait, 800px wide minimum
+**Gallery.** Below the card section, photos stack one after another. Each one renders at its **natural aspect ratio** — landscape photos stay landscape, portrait photos stay portrait. No cropping, no forced aspect.
 
-The page uses a `tryLoad()` helper so missing files leave styled dark placeholders rather than breaking.
+## How to add photos
+
+Drop JPGs into `assets/photos/` using these filenames:
+
+- `bg.jpg` — the blurred background. Recommended 1920px wide, ~500KB.
+- `avatar.jpg` — the circular profile picture. Square, 800x800 minimum.
+- `photo-1.jpg` through `photo-N.jpg` — the gallery. Any aspect ratio.
+
+**To add more gallery photos**, just add `<div class="photo" data-n="11"></div>` (and 12, 13, ...) to the `.photo-stack` block in `index.html`. The JS picks up anything with a `data-n` attribute.
+
+The page uses graceful fallback — missing photos just leave styled dark placeholders.
 
 ## Deploy to GitHub Pages
 
@@ -87,8 +77,9 @@ Open `index.html` in any editor. Top of the file has all the colors and typograp
 
 Common edits:
 
-- **Bio text**: search for `Official links. New posts every week.` in the hero section
+- **Bio text**: search for `Official links. New posts every week.`
 - **Stats numbers**: search for `120+`, `14.2K`, `3`
-- **Footer**: search for `Back to top` or `Rachel Leslie. All rights reserved.`
+- **Footer text**: search for `All rights reserved`
 - **Accent colors**: edit `--accent-1`, `--accent-2`, `--accent-3` in `:root`
-- **Cross-fade timing**: search for `1 - t * 2` and `(t - 0.33) / 0.33` in the JS section
+- **Background blur amount**: edit `filter: blur(18px)` in the `.bg .img` rule
+- **Background overlay darkness**: edit the gradient stops in `.bg::after`

@@ -11,9 +11,8 @@
 <meta property="og:type" content="profile" />
 <link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://www.google.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #0b0b14;
@@ -40,70 +39,50 @@
   }
 
   /* ============================================================
-     HERO STAGE
-     Three viewport heights tall. Two photo layers stacked inside
-     a fixed background. Their opacities are driven by scroll
-     position via JS so they cross-fade as the user scrolls.
-     The card is `position: fixed` so it stays centered while
-     scrolling. The whole stage is `position: relative` only so
-     we can have an exit-fade to the dark gallery below.
+     BLURRED FIXED BACKGROUND
+     One photo, slight blur, full viewport. Stays put while the
+     page scrolls past it.
      ============================================================ */
-  .stage {
-    position: relative;
-    width: 100%;
-    height: 300vh;             /* 3 viewports of scroll distance for the fade */
-    background: var(--bg);
-  }
-  .photo-stage {
+  .bg {
     position: fixed;
     inset: 0;
     z-index: 0;
     overflow: hidden;
+    background: var(--bg);
   }
-  .photo-layer {
+  .bg .img {
     position: absolute;
-    inset: 0;
+    inset: -20px;          /* bleed the edges so the blur doesn't show a hard frame */
+    background-image: var(--bg-img);
     background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 0;
-    transition: opacity .05s linear;
-    will-change: opacity;
+    background-position: center 30%;
+    filter: blur(18px) saturate(1.05);
+    transform: scale(1.05);
   }
-  .photo-layer.is-visible { opacity: 1; }
-  .photo-layer[data-bg="assets/photos/bg.jpg"]   { background-position: center 30%; }
-  .photo-layer[data-bg="assets/photos/bg-2.jpg"] { background-position: center 40%; }
-
-  /* Soft readability overlay across both photo layers */
-  .photo-stage::after {
+  .bg::after {
     content: "";
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.05) 0%, rgba(11,11,20,0.30) 70%, rgba(11,11,20,0.75) 100%),
-      linear-gradient(180deg, rgba(11,11,20,0.05) 0%, rgba(11,11,20,0.02) 35%, rgba(11,11,20,0.20) 70%, rgba(11,11,20,0.65) 100%);
-    pointer-events: none;
+      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.05) 0%, rgba(11,11,20,0.25) 70%, rgba(11,11,20,0.55) 100%),
+      linear-gradient(180deg, rgba(11,11,20,0.10) 0%, rgba(11,11,20,0.20) 50%, rgba(11,11,20,0.50) 100%);
   }
 
-  /* Subtle color washes for warmth */
-  .photo-stage::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at 20% 80%, rgba(177,76,255,0.10), transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(255,77,141,0.10), transparent 50%);
-    pointer-events: none;
-    z-index: 1;
+  /* ============================================================
+     STICKY CARD
+     Sits centered in the viewport the whole time. position: sticky
+     inside a tall section keeps it in place without covering the
+     gallery section below.
+     ============================================================ */
+  .card-wrap {
+    position: relative;
+    z-index: 2;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 56px 16px;
   }
-
-  /* Floating, fixed card. Stays centered throughout the scroll. */
   .card {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 3;
     width: min(440px, calc(100% - 32px));
     padding: 28px 22px 22px;
     border-radius: 28px;
@@ -115,9 +94,7 @@
       0 1px 0 rgba(255,255,255,0.18) inset,
       0 20px 60px -10px rgba(0,0,0,0.55),
       0 40px 100px -30px rgba(0,0,0,0.7);
-    transition: opacity .3s ease;
   }
-  .card.is-hidden { opacity: 0; pointer-events: none; }
 
   .avatar-wrap {
     position: relative;
@@ -260,36 +237,13 @@
   a.link.primary .logo { background: rgba(255,255,255,0.18); }
   a.link.primary .arrow { color: rgba(255,255,255,0.85); }
 
-  /* Progress dots in the corner showing which photo you're on */
-  .progress {
-    position: fixed;
-    right: 18px;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 4;
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    pointer-events: none;
-  }
-  .progress .pip {
-    width: 6px; height: 6px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.30);
-    transition: background .3s ease, transform .3s ease;
-  }
-  .progress .pip.is-active {
-    background: white;
-    transform: scale(1.4);
-  }
-
   /* Scroll hint */
   .scroll-hint {
-    position: fixed;
-    bottom: 24px;
+    position: absolute;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 4;
+    z-index: 3;
     color: var(--muted);
     font-size: 11px;
     letter-spacing: 0.14em;
@@ -299,9 +253,7 @@
     align-items: center;
     gap: 6px;
     pointer-events: none;
-    transition: opacity .3s ease;
   }
-  .scroll-hint.is-faded { opacity: 0; }
   .scroll-hint .arrow-down {
     width: 18px; height: 28px;
     border: 1.5px solid rgba(255,255,255,0.6);
@@ -327,26 +279,20 @@
   }
 
   /* ============================================================
-     GALLERY (below the stage)
+     PHOTO GALLERY (below the fold)
+     A single column of stacked photos. Each one takes its real
+     height. Add as many as you want; the page just grows.
      ============================================================ */
   .gallery {
     position: relative;
-    padding: 80px 16px 100px;
+    z-index: 4;
     background: var(--bg);
-    z-index: 5;
-  }
-  .gallery::before {
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 80px;
-    background: linear-gradient(180deg, rgba(11,11,20,0.0), var(--bg));
-    pointer-events: none;
+    padding: 32px 0 0;
   }
   .gallery-head {
     max-width: 720px;
-    margin: 0 auto 32px;
-    padding: 0 8px;
+    margin: 0 auto 28px;
+    padding: 0 16px;
     text-align: center;
   }
   .gallery-head .eyebrow {
@@ -360,41 +306,34 @@
   .gallery-head h2 {
     font-family: var(--serif);
     font-weight: 400;
-    font-size: 28px;
+    font-size: 26px;
     letter-spacing: -0.015em;
     margin: 0;
     line-height: 1.15;
   }
   .gallery-head p {
-    margin: 10px auto 0;
+    margin: 8px auto 0;
     max-width: 440px;
     color: var(--muted);
     font-size: 14px;
     line-height: 1.55;
   }
   .photo-stack {
-    max-width: 720px;
-    margin: 0 auto;
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;          /* tight stack like an IG profile */
   }
-  .photo-card {
+  .photo {
     position: relative;
-    border-radius: 18px;
-    overflow: hidden;
+    width: 100%;
     background: #14141f;
-    border: 1px solid var(--border);
-    box-shadow: 0 18px 50px -16px rgba(0,0,0,0.7);
-    aspect-ratio: 4 / 5;
-  }
-  .photo-card .img {
-    position: absolute; inset: 0;
     background-image: var(--card-img);
     background-size: cover;
     background-position: center;
+    /* Aspect ratio set by the image itself via JS (data-aspect attribute)
+       so each photo renders at its natural shape. */
   }
-  .photo-card .placeholder {
+  .photo .placeholder {
     position: absolute; inset: 0;
     display: grid;
     place-items: center;
@@ -404,32 +343,13 @@
     text-transform: uppercase;
     font-weight: 600;
   }
-  @media (min-width: 640px) {
-    .photo-stack {
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-    }
-    .photo-card:nth-child(3n+1) {
-      grid-column: span 2;
-      aspect-ratio: 16 / 9;
-    }
-  }
+
   .footer {
     padding: 40px 16px 60px;
     text-align: center;
     background: var(--bg);
   }
-  .footer a {
-    color: var(--accent-3);
-    font-size: 13px;
-    font-weight: 600;
-    letter-spacing: 0.06em;
-    text-decoration: none;
-    text-transform: uppercase;
-  }
   .footer .meta {
-    display: block;
-    margin-top: 18px;
     color: rgba(245,245,247,0.40);
     font-size: 11.5px;
     letter-spacing: 0.06em;
@@ -438,17 +358,15 @@
 </head>
 <body>
 
-<!-- Scroll stage (3 viewports tall, drives the photo cross-fade) -->
-<div class="stage" id="stage">
+<!-- Fixed blurred background photo. Single image. -->
+<div class="bg">
+  <div class="img" id="bgImg"></div>
+</div>
 
-  <!-- Fixed background with two stacked photo layers -->
-  <div class="photo-stage" id="photoStage">
-    <div class="photo-layer" id="photoA" data-bg="assets/photos/bg.jpg"></div>
-    <div class="photo-layer" id="photoB" data-bg="assets/photos/bg-2.jpg"></div>
-  </div>
-
-  <!-- Fixed, hovered card. Stays centered while scrolling through the stage. -->
-  <div class="card" id="card">
+<!-- Hero: card sits centered in a viewport-tall section.
+     Below it the gallery takes over. -->
+<section class="card-wrap">
+  <div class="card">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar"></div>
       <span class="verified" aria-label="Verified">
@@ -484,140 +402,83 @@
     </nav>
   </div>
 
-  <!-- Progress pips showing which photo you're on -->
-  <div class="progress" aria-hidden="true">
-    <span class="pip" id="pip0"></span>
-    <span class="pip" id="pip1"></span>
-    <span class="pip" id="pip2"></span>
-  </div>
-
-  <!-- Scroll hint, fades after first scroll -->
-  <div class="scroll-hint" id="scrollHint">
-    <span>Scroll</span>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll for more</span>
     <span class="arrow-down"></span>
   </div>
+</section>
 
-</div>
-
-<!-- Below the fold -->
+<!-- Below the fold: stacked photos. Add as many as you want. -->
 <section class="gallery">
   <div class="gallery-head">
     <p class="eyebrow">More</p>
     <h2>Recent posts</h2>
-    <p>Tap any image to open the original on Instagram.</p>
   </div>
 
   <div class="photo-stack" id="photoStack">
-    <div class="photo-card" data-n="1"><div class="img"></div><div class="placeholder">Photo 1</div></div>
-    <div class="photo-card" data-n="2"><div class="img"></div><div class="placeholder">Photo 2</div></div>
-    <div class="photo-card" data-n="3"><div class="img"></div><div class="placeholder">Photo 3</div></div>
-    <div class="photo-card" data-n="4"><div class="img"></div><div class="placeholder">Photo 4</div></div>
-    <div class="photo-card" data-n="5"><div class="img"></div><div class="placeholder">Photo 5</div></div>
-    <div class="photo-card" data-n="6"><div class="img"></div><div class="placeholder">Photo 6</div></div>
-    <div class="photo-card" data-n="7"><div class="img"></div><div class="placeholder">Photo 7</div></div>
-    <div class="photo-card" data-n="8"><div class="img"></div><div class="placeholder">Photo 8</div></div>
+    <div class="photo" data-n="1"><div class="placeholder">Photo 1</div></div>
+    <div class="photo" data-n="2"><div class="placeholder">Photo 2</div></div>
+    <div class="photo" data-n="3"><div class="placeholder">Photo 3</div></div>
+    <div class="photo" data-n="4"><div class="placeholder">Photo 4</div></div>
+    <div class="photo" data-n="5"><div class="placeholder">Photo 5</div></div>
+    <div class="photo" data-n="6"><div class="placeholder">Photo 6</div></div>
+    <div class="photo" data-n="7"><div class="placeholder">Photo 7</div></div>
+    <div class="photo" data-n="8"><div class="placeholder">Photo 8</div></div>
+    <div class="photo" data-n="9"><div class="placeholder">Photo 9</div></div>
+    <div class="photo" data-n="10"><div class="placeholder">Photo 10</div></div>
   </div>
 </section>
 
 <div class="footer">
-  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top</a>
   <span class="meta">2026 Rachel Leslie. All rights reserved.</span>
 </div>
 
 <script>
-  /* ---------- Photo loading (with fallback) ---------- */
-  function tryLoad(src, ok) {
-    const img = new Image();
-    img.onload  = () => ok(img.src);
-    img.onerror = () => ok(null);
-    img.src = src;
-  }
-
-  const photos = {
-    avatar: 'assets/photos/avatar.jpg',
-    stack:  Array.from({length: 8}, (_, i) => `assets/photos/photo-${i+1}.jpg`)
+  /* ---------- Photo loading ---------- */
+  // Background photo (single image, blurred). If missing the page
+  // just shows the dark background color.
+  const bgImg = document.getElementById('bgImg');
+  const bgImgLoader = new Image();
+  bgImgLoader.onload = () => {
+    document.documentElement.style.setProperty('--bg-img', `url('${bgImgLoader.src}')`);
   };
+  bgImgLoader.onerror = () => {
+    // No background photo: leave the dark theme.
+  };
+  bgImgLoader.src = 'assets/photos/bg.jpg';
 
-  // Load avatar
-  tryLoad(photos.avatar, ok => {
-    if (ok) document.documentElement.style.setProperty('--avatar-img', `url('${ok}')`);
-  });
+  // Avatar
+  const avatarLoader = new Image();
+  avatarLoader.onload = () => {
+    document.documentElement.style.setProperty('--avatar-img', `url('${avatarLoader.src}')`);
+  };
+  avatarLoader.src = 'assets/photos/avatar.jpg';
 
-  // Load each photo layer independently. If a layer's file is missing,
-  // skip it and let the next visible one show.
-  ['photoA','photoB'].forEach(id => {
-    const el = document.getElementById(id);
-    if (!el) return;
-    const src = el.dataset.bg;
-    tryLoad(src, ok => {
-      if (ok) el.style.backgroundImage = `url('${ok}')`;
-    });
-  });
-
-  // Load gallery cards
-  photos.stack.forEach((src, i) => {
-    tryLoad(src, ok => {
-      if (!ok) return;
-      const card = document.querySelector(`.photo-card[data-n="${i+1}"]`);
-      if (!card) return;
-      const imgDiv = card.querySelector('.img');
-      const ph = card.querySelector('.placeholder');
-      imgDiv.style.backgroundImage = `url('${ok}')`;
+  // Gallery photos. Each photo's actual aspect ratio is read from
+  // the image so it renders at its real shape. No cropping, no
+  // forced 4:5. Just the photo, full-width.
+  document.querySelectorAll('.photo').forEach(el => {
+    const n = el.dataset.n;
+    const src = `assets/photos/photo-${n}.jpg`;
+    const img = new Image();
+    img.onload = () => {
+      el.style.backgroundImage = `url('${src}')`;
+      // Use natural aspect ratio so the photo is undistorted
+      const ratio = img.naturalHeight / img.naturalWidth;
+      el.style.paddingBottom = (ratio * 100).toFixed(2) + '%';
+      const ph = el.querySelector('.placeholder');
       if (ph) ph.style.display = 'none';
-    });
+    };
+    img.onerror = () => { /* leave placeholder */ };
+    img.src = src;
   });
 
-  /* ---------- Scroll-driven cross-fade ---------- */
-  // Photo A visible at scroll 0 -> fades out by halfway.
-  // Photo B fades in starting halfway, full at end of stage.
-  // The third pip represents the stage's last 1/3 where both are
-  // fully gone (transitioning to the gallery).
-
-  const photoA   = document.getElementById('photoA');
-  const photoB   = document.getElementById('photoB');
-  const stage    = document.getElementById('stage');
-  const card     = document.getElementById('card');
-  const pips     = [document.getElementById('pip0'), document.getElementById('pip1'), document.getElementById('pip2')];
-  const hint     = document.getElementById('scrollHint');
-
-  function onScroll() {
-    const rect = stage.getBoundingClientRect();
-    const stageHeight = stage.offsetHeight;
-    const viewportH = window.innerHeight;
-
-    // How far through the stage we are, from 0 to 1.
-    // 0 = stage top is at viewport top.
-    // 1 = stage bottom is at viewport bottom.
-    const raw = -rect.top / (stageHeight - viewportH);
-    const t = Math.max(0, Math.min(1, raw));
-
-    // Photo A: full at t=0, gone at t=0.5
-    const a = Math.max(0, 1 - t * 2);
-    // Photo B: starts at t=0.33, full at t=0.66
-    const b = Math.min(1, Math.max(0, (t - 0.33) / 0.33));
-
-    photoA.style.opacity = a;
-    photoB.style.opacity = b;
-
-    // Pips
-    pips[0].classList.toggle('is-active', t < 0.33);
-    pips[1].classList.toggle('is-active', t >= 0.33 && t < 0.66);
-    pips[2].classList.toggle('is-active', t >= 0.66);
-
-    // Card fades out near the end of the stage so the gallery appears cleanly.
-    // t > 0.85 -> fade card out
-    if (card) {
-      if (t > 0.85) card.classList.add('is-hidden');
-      else card.classList.remove('is-hidden');
-    }
-
-    // Scroll hint fades out once user starts moving
-    if (hint) hint.classList.toggle('is-faded', window.scrollY > 80);
-  }
-
-  window.addEventListener('scroll', onScroll, { passive: true });
-  window.addEventListener('resize', onScroll);
-  onScroll();
+  /* ---------- Scroll hint fade ---------- */
+  const hint = document.querySelector('.scroll-hint');
+  window.addEventListener('scroll', () => {
+    if (!hint) return;
+    hint.style.opacity = window.scrollY > 80 ? '0' : '1';
+  }, { passive: true });
 </script>
 
 </body>
