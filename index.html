@@ -43,7 +43,7 @@
     z-index: 0;
     background-image: url('assets/photos/bg.jpg');
     background-size: cover;
-    background-position: center;
+    background-position: center 25%;
     /* Pull saturation way down + lighten the whites + soften the contrast. */
     filter: grayscale(0.85) brightness(1.10) contrast(0.90) saturate(0.35);
   }
@@ -65,8 +65,11 @@
   .page-bg > * { position: relative; z-index: 1; }
 
   /* The banner image, full-width at the top.
-     Uses object-fit so it crops cleanly on any screen. */
+     Uses object-fit so it crops cleanly on any screen.
+     z-index 2 so it sits above the page-bg fixed layer. */
   .banner {
+    position: relative;
+    z-index: 2;
     width: 100%;
     height: clamp(220px, 38vw, 460px);
     background: #000 url('assets/photos/banner.jpg') center/cover no-repeat;
