@@ -1,8 +1,10 @@
 # Rachel Leslie — Link Site
 
-A simple link-in-bio page. One photo as a blurred background, a glassmorphic card with the link buttons centered on top. Below the fold, photos stack vertically as you scroll.
+**Live:** https://therayally.github.io/therachelleslie/
 
-**Stack:** Single `index.html` + custom CSS. Zero build step. Pure HTML/CSS/JS — opens in any browser, deploys to any static host.
+Link-in-bio page for Rachel Leslie. Banner + centered white-outlined see-through buttons on a pink/gold watercolor background, with a short bio and an "About Me" section at the bottom asking for support.
+
+**Stack:** Single `index.html` + custom CSS. Zero build step. Pure HTML/CSS — opens in any browser, deploys to any static host.
 
 ## Local preview
 
