@@ -1,0 +1,405 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#0b0b14" />
+<title>Rachel Leslie</title>
+<meta name="description" content="Rachel Leslie. Official links." />
+<meta property="og:title" content="Rachel Leslie" />
+<meta property="og:description" content="Official links" />
+<meta property="og:type" content="profile" />
+<link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #0b0b14;
+    --bg-2: #14141f;
+    --ink: #f5f5f7;
+    --muted: #a1a1aa;
+    --border: rgba(255,255,255,0.08);
+    --glass: rgba(255,255,255,0.06);
+    --glass-2: rgba(255,255,255,0.10);
+    --accent-1: #ff4d8d;
+    --accent-2: #b14cff;
+    --accent-3: #4cc9ff;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--ink);
+    background: var(--bg);
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Background photo layer */
+  .bg-photo {
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    background:
+      linear-gradient(180deg, rgba(11,11,20,0.55) 0%, rgba(11,11,20,0.85) 60%, rgba(11,11,20,0.98) 100%),
+      radial-gradient(circle at 20% 20%, rgba(177,76,255,0.25), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(255,77,141,0.25), transparent 50%),
+      var(--bg);
+    background-size: cover;
+    background-position: center;
+    filter: blur(0px);
+  }
+  .bg-photo::before {
+    content: "";
+    position: absolute;
+    inset: -40px;
+    background-image: var(--bg-img);
+    background-size: cover;
+    background-position: center;
+    filter: blur(28px) saturate(1.1);
+    transform: scale(1.1);
+    opacity: 0.85;
+  }
+  .bg-photo::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(180deg, rgba(11,11,20,0.45) 0%, rgba(11,11,20,0.78) 55%, rgba(11,11,20,1) 100%);
+  }
+
+  /* Layout */
+  main {
+    position: relative;
+    z-index: 1;
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 56px 20px 96px;
+  }
+
+  /* Hero */
+  .hero {
+    text-align: center;
+    margin-bottom: 32px;
+  }
+  .avatar-wrap {
+    position: relative;
+    width: 132px;
+    height: 132px;
+    margin: 0 auto 18px;
+    border-radius: 50%;
+    padding: 3px;
+    background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
+    box-shadow: 0 12px 40px -10px rgba(177,76,255,0.55), 0 0 0 1px rgba(255,255,255,0.06);
+  }
+  .avatar {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: var(--bg-2);
+    background-image: var(--avatar-img);
+    background-size: cover;
+    background-position: center;
+    border: 3px solid var(--bg);
+  }
+  .verified {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: var(--accent-2);
+    border: 3px solid var(--bg);
+    display: grid;
+    place-items: center;
+  }
+  .verified svg { width: 16px; height: 16px; color: white; }
+
+  h1.name {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+    margin: 0 0 6px;
+    background: linear-gradient(135deg, #ffffff 0%, #f5f5f7 50%, #ffffff 100%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .handle {
+    color: var(--muted);
+    font-size: 14px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    margin: 0;
+  }
+  .bio {
+    color: var(--ink);
+    font-size: 15px;
+    line-height: 1.55;
+    margin: 14px auto 0;
+    max-width: 360px;
+    opacity: 0.92;
+  }
+
+  /* Stats row */
+  .stats {
+    display: flex;
+    justify-content: center;
+    gap: 28px;
+    margin-top: 20px;
+    padding: 14px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+  .stat { text-align: center; }
+  .stat .n { font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
+  .stat .l { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+
+  /* Link buttons */
+  .links {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 28px;
+  }
+  a.link {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 14px 18px;
+    border-radius: 16px;
+    background: var(--glass);
+    border: 1px solid var(--border);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    color: var(--ink);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 15px;
+    transition: transform .18s ease, background .18s ease, border-color .18s ease;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px -10px rgba(0,0,0,0.4);
+  }
+  a.link:hover {
+    transform: translateY(-2px);
+    background: var(--glass-2);
+    border-color: rgba(255,255,255,0.16);
+  }
+  a.link .logo {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: white;
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    overflow: hidden;
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.3);
+  }
+  a.link .logo img { width: 28px; height: 28px; object-fit: contain; }
+  a.link .text { flex: 1; text-align: left; }
+  a.link .sub { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 2px; letter-spacing: 0.02em; }
+  a.link .arrow { color: var(--muted); flex: 0 0 auto; }
+
+  /* Featured/Primary button */
+  a.link.primary {
+    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
+    border: 1px solid rgba(255,255,255,0.18);
+    box-shadow: 0 12px 32px -8px rgba(255,77,141,0.45), 0 1px 0 rgba(255,255,255,0.18) inset;
+  }
+  a.link.primary .logo {
+    background: rgba(255,255,255,0.18);
+    backdrop-filter: blur(8px);
+  }
+  a.link.primary .arrow { color: rgba(255,255,255,0.85); }
+
+  /* Photo grid (IG/BSky style) */
+  .grid-wrap {
+    margin-top: 40px;
+  }
+  .grid-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+  }
+  .grid-head h2 {
+    margin: 0;
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--muted);
+  }
+  .grid-head a { color: var(--accent-3); font-size: 12px; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; }
+  .photo-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 4px;
+    border-radius: 14px;
+    overflow: hidden;
+  }
+  .photo-grid .cell {
+    aspect-ratio: 1 / 1;
+    background: var(--bg-2);
+    background-image: var(--cell-img);
+    background-size: cover;
+    background-position: center;
+    border: 1px solid rgba(255,255,255,0.04);
+    cursor: pointer;
+    transition: transform .25s ease;
+  }
+  .photo-grid .cell:hover { transform: scale(1.03); }
+
+  /* Footer */
+  footer {
+    margin-top: 56px;
+    text-align: center;
+    color: var(--muted);
+    font-size: 12px;
+    letter-spacing: 0.04em;
+  }
+  footer .dot {
+    display: inline-block;
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent-1);
+    margin: 0 8px;
+    vertical-align: middle;
+  }
+  footer a { color: var(--muted); text-decoration: none; }
+  footer a:hover { color: var(--ink); }
+
+  /* Mobile fine-tune */
+  @media (max-width: 480px) {
+    main { padding: 40px 18px 80px; }
+    h1.name { font-size: 26px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Background photo: drop your photos as assets/hero-1.jpg, hero-2.jpg and uncomment -->
+<div class="bg-photo" id="bgPhoto"></div>
+
+<main>
+
+  <section class="hero">
+    <div class="avatar-wrap">
+      <div class="avatar" id="avatar"></div>
+      <span class="verified" aria-label="Verified">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M5 12.5l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+    </div>
+    <h1 class="name">Rachel Leslie</h1>
+    <p class="handle">@therachelleslie</p>
+    <p class="bio">Official links. New posts every week.</p>
+
+    <div class="stats">
+      <div class="stat"><div class="n" id="statPosts">120+</div><div class="l">Posts</div></div>
+      <div class="stat"><div class="n" id="statFollowers">14.2K</div><div class="l">Followers</div></div>
+      <div class="stat"><div class="n">3</div><div class="l">Platforms</div></div>
+    </div>
+  </section>
+
+  <nav class="links" aria-label="Social links">
+    <a class="link primary" href="https://fanvue.com/rachelleslie" target="_blank" rel="noopener">
+      <span class="logo"><img src="assets/logos/fanvue-256.png" alt="Fanvue" /></span>
+      <span class="text">Fanvue<span class="sub">Subscribe. New content weekly.</span></span>
+      <span class="arrow" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
+
+    <a class="link" href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">
+      <span class="logo"><img src="assets/logos/instagram-256.png" alt="Instagram" /></span>
+      <span class="text">Instagram<span class="sub">@therachelleslie</span></span>
+      <span class="arrow" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
+
+    <a class="link" href="https://bsky.app/profile/therachelleslie.bsky.social" target="_blank" rel="noopener">
+      <span class="logo"><img src="assets/logos/bsky-256.png" alt="Bluesky" /></span>
+      <span class="text">Bluesky<span class="sub">@therachelleslie.bsky.social</span></span>
+      <span class="arrow" aria-hidden="true">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+    </a>
+  </nav>
+
+  <section class="grid-wrap">
+    <div class="grid-head">
+      <h2>Recent</h2>
+      <a href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">View all</a>
+    </div>
+    <div class="photo-grid" id="photoGrid">
+      <div class="cell" id="cell0"></div>
+      <div class="cell" id="cell1"></div>
+      <div class="cell" id="cell2"></div>
+      <div class="cell" id="cell3"></div>
+      <div class="cell" id="cell4"></div>
+      <div class="cell" id="cell5"></div>
+    </div>
+  </section>
+
+  <footer>
+    <span>2026 Rachel Leslie</span>
+    <span class="dot"></span>
+    <a href="mailto:contact@rachelleslie.com">contact@rachelleslie.com</a>
+  </footer>
+
+</main>
+
+<script>
+  // Photo slots. Drop your JPGs into /assets/ and they'll auto-attach.
+  // Just name them bg.jpg (background), avatar.jpg (profile pic), and grid-1.jpg ... grid-6.jpg.
+  const photos = {
+    bg:    'assets/photos/bg.jpg',
+    avatar:'assets/photos/avatar.jpg',
+    grid:  ['grid-1','grid-2','grid-3','grid-4','grid-5','grid-6'].map(n => `assets/photos/${n}.jpg`)
+  };
+
+  function apply(src, target) {
+    target.style.backgroundImage = `url('${src}')`;
+    target.style.backgroundSize  = 'cover';
+    target.style.backgroundPosition = 'center';
+  }
+
+  // Try-load with one fallback each. If a file is missing, the slot stays as a styled dark cell.
+  function tryLoad(src, ok) {
+    const img = new Image();
+    img.onload  = () => ok(img.src);
+    img.onerror = () => ok(null);
+    img.src = src;
+  }
+
+  // Background
+  tryLoad(photos.bg, ok => {
+    if (ok) document.documentElement.style.setProperty('--bg-img', `url('${ok}')`);
+  });
+
+  // Avatar
+  tryLoad(photos.avatar, ok => {
+    if (ok) document.documentElement.style.setProperty('--avatar-img', `url('${ok}')`);
+  });
+
+  // Photo grid
+  photos.grid.forEach((src, i) => {
+    tryLoad(src, ok => {
+      if (ok) {
+        const el = document.getElementById('cell' + i);
+        if (el) el.style.backgroundImage = `url('${ok}')`;
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
