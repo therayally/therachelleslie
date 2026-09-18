@@ -8,54 +8,37 @@
 <link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Cinzel:wght@500;600;700&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Montserrat:wght@500;600;700;800&display=swap" rel="stylesheet" />
 <style>
-  :root {
-    --ink: #1f1f24;
-    --charcoal-1: #2a2622;            /* table surface */
-    --charcoal-2: #1a1714;            /* deeper */
-    --charcoal-3: #3a3530;            /* highlight */
-    --gold-1: #f5d97a;
-    --gold-2: #d4a64a;
-    --gold-3: #fff1b8;
-    --gold-grad: linear-gradient(180deg, var(--gold-3) 0%, var(--gold-1) 45%, var(--gold-2) 100%);
-  }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    color: var(--ink);
-    background: #1a1416;
+    color: #fff;
+    background: #1a1416 url('assets/photos/bg.jpg') center/cover no-repeat;
+    background-attachment: fixed;
     min-height: 100vh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Watercolor background — full-bleed, no desaturation. The pink + gold
-     splatter IS the texture. Sits behind the banner and the charcoal table. */
-  .page-bg::before {
+  /* Soft dark scrim so the white button outlines stay readable.
+     Keeps the watercolor visible but slightly toned. */
+  body::before {
     content: "";
     position: fixed;
     inset: 0;
-    z-index: 0;
-    background: url('assets/photos/bg.jpg') center/cover no-repeat;
-  }
-  .page-bg::after {
-    content: "";
-    position: fixed;
-    inset: 0;
-    z-index: 0;
-    /* Soft dark wash so the charcoal table reads cleanly on top of the bright watercolor */
-    background: linear-gradient(180deg,
-      rgba(26,20,22,0.55) 0%,
-      rgba(26,20,22,0.40) 30%,
-      rgba(26,20,22,0.55) 70%,
-      rgba(26,20,22,0.85) 100%);
+    background:
+      linear-gradient(180deg,
+        rgba(26,20,22,0.55) 0%,
+        rgba(26,20,22,0.30) 25%,
+        rgba(26,20,22,0.30) 65%,
+        rgba(26,20,22,0.70) 100%);
     pointer-events: none;
+    z-index: 0;
   }
-  .page-bg > * { position: relative; z-index: 1; }
 
-  /* Banner at the top, z-index above the watercolor layer. */
+  /* Banner at the top, z-index above the scrim. */
   .banner {
     position: relative;
     z-index: 2;
@@ -65,128 +48,82 @@
     display: block;
   }
 
-  /* Soft fade under the banner */
+  /* Soft fade under the banner into the watercolor. */
   .banner-fade {
-    height: 40px;
-    background: linear-gradient(180deg, rgba(26,20,22,0.0) 0%, rgba(26,20,22,0.55) 100%);
+    height: 48px;
+    background: linear-gradient(180deg, rgba(26,20,22,0.55) 0%, rgba(26,20,22,0.0) 100%);
     margin-top: -2px;
     position: relative;
     z-index: 1;
   }
 
-  /* The "table" that holds the buttons — narrower than before, charcoal surface.
-     Uses Cinzel for the heading inside the table to lean into the luxe aesthetic. */
-  .table-wrap {
-    max-width: 360px;
-    margin: 0 auto;
-    padding: 8px 16px 0;
+  .wrap {
     position: relative;
     z-index: 2;
-  }
-  .table {
-    padding: 20px 16px 18px;
-    border-radius: 20px;
-    background:
-      radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.06) 0%, rgba(0,0,0,0) 60%),
-      linear-gradient(180deg, var(--charcoal-3) 0%, var(--charcoal-1) 50%, var(--charcoal-2) 100%);
-    border: 1px solid rgba(255,255,255,0.08);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 -1px 0 rgba(0,0,0,0.50) inset,
-      0 18px 50px -16px rgba(0,0,0,0.55),
-      0 40px 80px -30px rgba(0,0,0,0.65);
-  }
-
-  /* Optional gold hairline at the top of the table for the luxe feel. */
-  .table::before {
-    content: "";
-    position: absolute;
-    top: 8px;
-    left: 16px;
-    right: 16px;
-    height: 1px;
-    background: linear-gradient(90deg,
-      rgba(245,217,122,0) 0%,
-      rgba(245,217,122,0.55) 50%,
-      rgba(245,217,122,0) 100%);
+    max-width: 480px;
+    margin: 0 auto;
+    padding: 12px 20px 28px;
   }
 
   .links {
     display: flex;
     flex-direction: column;
-    gap: 9px;
-    margin-top: 6px;
+    gap: 14px;
   }
 
-  /* Each button: pure black, gold metallic lettering, subtle gold rim.
-     The gold gradient on text uses background-clip to get the metallic shine. */
+  /* Big, see-through white-outlined boxes. The background watercolor shows
+     through them — that's the whole look. */
   a.link {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 14px;
-    padding: 13px 16px;
-    border-radius: 12px;
-    background: linear-gradient(180deg, #0c0a09 0%, #1a1714 100%);
-    border: 1px solid rgba(245,217,122,0.22);
-    color: var(--gold-1);
+    padding: 22px 20px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.08);
+    border: 1.5px solid rgba(255,255,255,0.85);
+    color: #fff;
     text-decoration: none;
-    font-family: 'Cinzel', 'Trajan Pro', 'Times New Roman', serif;
-    font-weight: 600;
-    font-size: 14px;
-    letter-spacing: 0.16em;
+    font-family: 'Montserrat', 'Inter', sans-serif;
+    font-weight: 700;
+    font-size: 17px;
+    letter-spacing: 0.10em;
     text-transform: uppercase;
-    transition: transform .18s ease, border-color .18s ease, box-shadow .18s ease, background .18s ease;
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.06) inset,
-      0 2px 8px -2px rgba(0,0,0,0.55);
-  }
-  a.link .label {
-    flex: 1;
-    text-align: center;
-    background: var(--gold-grad);
-    -webkit-background-clip: text;
-    background-clip: text;
-    -webkit-text-fill-color: transparent;
-    color: transparent;
-    /* Light shimmer on the gradient to read as metal. */
-    filter: drop-shadow(0 1px 0 rgba(0,0,0,0.5));
+    transition: background .18s ease, transform .18s ease, box-shadow .18s ease;
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+    box-shadow: 0 6px 20px -8px rgba(0,0,0,0.4);
   }
   a.link .logo {
-    width: 22px;
-    height: 22px;
-    border-radius: 5px;
+    width: 24px;
+    height: 24px;
+    border-radius: 6px;
     background: transparent;
     display: grid;
     place-items: center;
     flex: 0 0 auto;
     overflow: hidden;
   }
-  a.link .logo img { width: 22px; height: 22px; object-fit: contain; }
-  a.link .arrow {
-    color: rgba(245,217,122,0.55);
-    flex: 0 0 auto;
-  }
+  a.link .logo img { width: 24px; height: 24px; object-fit: contain; }
+  a.link .label { flex: 0 1 auto; }
+
   a.link:hover {
-    transform: translateY(-1px);
-    border-color: rgba(245,217,122,0.55);
-    box-shadow:
-      0 1px 0 rgba(255,255,255,0.10) inset,
-      0 6px 18px -4px rgba(245,217,122,0.20),
-      0 12px 28px -8px rgba(0,0,0,0.65);
+    background: rgba(255,255,255,0.18);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
   }
-  a.link:hover .arrow { color: var(--gold-1); }
 
   .footer {
+    position: relative;
+    z-index: 2;
     text-align: center;
-    padding: 28px 16px 36px;
-    color: rgba(245,217,122,0.55);
+    padding: 8px 16px 28px;
+    color: rgba(255,255,255,0.75);
     font-size: 11px;
     letter-spacing: 0.20em;
     text-transform: uppercase;
-    font-family: 'Cinzel', serif;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 500;
-    position: relative;
-    z-index: 2;
   }
 </style>
 </head>
@@ -194,38 +131,30 @@
 
 <div class="banner" role="img" aria-label="Rachel Leslie"></div>
 
-<div class="page-bg">
-  <div class="banner-fade"></div>
+<div class="banner-fade"></div>
 
-  <div class="table-wrap">
-    <div class="table">
-      <nav class="links" aria-label="Social links">
-        <a class="link" href="https://fanvue.com/rachelleslie" target="_blank" rel="noopener">
-          <span class="logo"><img src="assets/logos/fanvue-256.png" alt="Fanvue" /></span>
-          <span class="label">Fanvue</span>
-          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
-        <a class="link" href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">
-          <span class="logo"><img src="assets/logos/instagram-256.png" alt="Instagram" /></span>
-          <span class="label">Instagram</span>
-          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
-        <a class="link" href="https://bsky.app/profile/therachelleslie.bsky.social" target="_blank" rel="noopener">
-          <span class="logo"><img src="assets/logos/bsky-256.png" alt="Bluesky" /></span>
-          <span class="label">Bluesky</span>
-          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
-        <a class="link" href="https://www.facebook.com/profile.php?id=61594489410522" target="_blank" rel="noopener">
-          <span class="logo"><img src="assets/logos/facebook-256.png" alt="Facebook" /></span>
-          <span class="label">Facebook</span>
-          <span class="arrow"><svg width="14" height="14" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-        </a>
-      </nav>
-    </div>
-  </div>
-
-  <div class="footer">2026 Rachel Leslie</div>
+<div class="wrap">
+  <nav class="links" aria-label="Social links">
+    <a class="link" href="https://fanvue.com/rachelleslie" target="_blank" rel="noopener">
+      <span class="logo"><img src="assets/logos/fanvue-256.png" alt="Fanvue" /></span>
+      <span class="label">Fanvue</span>
+    </a>
+    <a class="link" href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">
+      <span class="logo"><img src="assets/logos/instagram-256.png" alt="Instagram" /></span>
+      <span class="label">Instagram</span>
+    </a>
+    <a class="link" href="https://bsky.app/profile/therachelleslie.bsky.social" target="_blank" rel="noopener">
+      <span class="logo"><img src="assets/logos/bsky-256.png" alt="Bluesky" /></span>
+      <span class="label">Bluesky</span>
+    </a>
+    <a class="link" href="https://www.facebook.com/profile.php?id=61594489410522" target="_blank" rel="noopener">
+      <span class="logo"><img src="assets/logos/facebook-256.png" alt="Facebook" /></span>
+      <span class="label">Facebook</span>
+    </a>
+  </nav>
 </div>
+
+<div class="footer">2026 Rachel Leslie</div>
 
 </body>
 </html>
