@@ -38,13 +38,20 @@
     z-index: 0;
   }
 
-  /* Banner at the top. */
+  /* Banner — uses a real <img> tag instead of background-image so the
+     FULL image is always visible. No cropping, no zoom tricks. The
+     image scales to 100% width and the slot heights itself to the
+     image's native aspect ratio (1920 / 688 = 0.358). */
   .banner {
     position: relative;
     z-index: 2;
     width: 100%;
-    height: clamp(220px, 38vw, 460px);
-    background: #000 url('assets/photos/banner.jpg') center/cover no-repeat;
+    display: block;
+    line-height: 0;             /* kill the inline-image baseline gap */
+  }
+  .banner img {
+    width: 100%;
+    height: auto;
     display: block;
   }
 
@@ -196,7 +203,7 @@
 </head>
 <body>
 
-<div class="banner" role="img" aria-label="Rachel Leslie"></div>
+<div class="banner"><img src="assets/photos/banner.jpg?v=2" alt="Rachel Leslie" /></div>
 
 <div class="banner-fade"></div>
 
