@@ -8,40 +8,46 @@
 <link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
 <style>
   :root {
-    --bg: #0b0b14;
-    --ink: #f5f5f7;
-    --muted: rgba(245,245,247,0.80);
-    --glass: rgba(11,11,20,0.55);
-    --border: rgba(255,255,255,0.14);
-    --border-strong: rgba(255,255,255,0.22);
-    --accent-1: #ff4d8d;
-    --accent-2: #b14cff;
-    --accent-3: #4cc9ff;
-    --serif: 'Fraunces', Georgia, serif;
+    --ink: #1f1f24;
+    --muted: rgba(31,31,36,0.65);
+    --glass: rgba(255,255,255,0.55);
+    --glass-strong: rgba(255,255,255,0.72);
+    --border: rgba(255,255,255,0.65);
+    --accent: #e879a8;
+    --accent-dark: #c45889;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; height: 100%; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--ink);
-    background: var(--bg) url('assets/photos/bg.jpg') center/cover no-repeat;
+    background: #000 url('assets/photos/bg.jpg') center/cover no-repeat;
+    background-position: center 35%;
     min-height: 100vh;
     min-height: 100svh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Dark gradient overlay so the card stays readable */
+  /* Light fade overlay — softens the photo for readability without
+     hiding it. Strongest at the top (behind the name) and bottom
+     (so the card lifts visually), softer through the middle so the
+     photo stays visible. */
   body::before {
     content: "";
     position: fixed;
     inset: 0;
     background:
-      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.10) 0%, rgba(11,11,20,0.45) 70%, rgba(11,11,20,0.85) 100%),
-      linear-gradient(180deg, rgba(11,11,20,0.20) 0%, rgba(11,11,20,0.40) 50%, rgba(11,11,20,0.80) 100%);
+      linear-gradient(180deg,
+        rgba(255,255,255,0.55) 0%,
+        rgba(255,255,255,0.30) 30%,
+        rgba(255,255,255,0.30) 60%,
+        rgba(255,255,255,0.45) 100%);
+    backdrop-filter: blur(3px);
+    -webkit-backdrop-filter: blur(3px);
     pointer-events: none;
   }
 
@@ -55,126 +61,57 @@
     padding: 32px 16px;
   }
 
+  .name {
+    margin: 0 0 6px;
+    font-family: 'Dancing Script', 'Snell Roundhand', cursive;
+    font-weight: 600;
+    font-size: 56px;
+    letter-spacing: 0.005em;
+    text-align: center;
+    line-height: 1;
+    color: var(--ink);
+    text-shadow: 0 2px 18px rgba(255,255,255,0.55);
+  }
+
   .card {
     width: min(440px, calc(100% - 32px));
-    padding: 28px 22px 22px;
-    border-radius: 28px;
+    margin-top: 18px;
+    padding: 18px;
+    border-radius: 24px;
     background: var(--glass);
-    backdrop-filter: blur(22px) saturate(1.4);
-    -webkit-backdrop-filter: blur(22px) saturate(1.4);
+    backdrop-filter: blur(28px) saturate(1.6);
+    -webkit-backdrop-filter: blur(28px) saturate(1.6);
     border: 1px solid var(--border);
     box-shadow:
-      0 1px 0 rgba(255,255,255,0.18) inset,
-      0 20px 60px -10px rgba(0,0,0,0.55),
-      0 40px 100px -30px rgba(0,0,0,0.7);
-  }
-
-  .avatar-wrap {
-    position: relative;
-    width: 110px;
-    height: 110px;
-    margin: 0 auto 14px;
-    border-radius: 50%;
-    padding: 3px;
-    background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-    box-shadow: 0 12px 36px -8px rgba(177,76,255,0.55);
-  }
-  .avatar {
-    width: 100%; height: 100%;
-    border-radius: 50%;
-    background: var(--bg) url('assets/photos/avatar.jpg') center/cover no-repeat;
-    border: 3px solid var(--bg);
-  }
-  .verified {
-    position: absolute;
-    right: 2px;
-    bottom: 2px;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    background: var(--accent-2);
-    border: 3px solid var(--bg);
-    display: grid;
-    place-items: center;
-  }
-  .verified svg { width: 14px; height: 14px; color: white; }
-
-  .name {
-    margin: 0;
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 30px;
-    letter-spacing: -0.01em;
-    text-align: center;
-    line-height: 1.1;
-  }
-  .handle {
-    margin: 4px 0 0;
-    text-align: center;
-    color: var(--muted);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.04em;
-  }
-  .bio {
-    margin: 14px auto 0;
-    max-width: 320px;
-    text-align: center;
-    color: var(--ink);
-    font-size: 14px;
-    line-height: 1.55;
-    opacity: 0.92;
-  }
-
-  .stats {
-    display: flex;
-    justify-content: center;
-    gap: 26px;
-    margin: 18px auto 0;
-    padding: 14px 0;
-    border-top: 1px solid var(--border);
-    border-bottom: 1px solid var(--border);
-  }
-  .stat { text-align: center; }
-  .stat .n {
-    font-family: var(--serif);
-    font-weight: 500;
-    font-size: 18px;
-    letter-spacing: -0.01em;
-  }
-  .stat .l {
-    color: var(--muted);
-    font-size: 11px;
-    text-transform: uppercase;
-    letter-spacing: 0.10em;
-    margin-top: 2px;
+      0 1px 0 rgba(255,255,255,0.85) inset,
+      0 20px 50px -16px rgba(0,0,0,0.25),
+      0 40px 80px -30px rgba(0,0,0,0.30);
   }
 
   .links {
     display: flex;
     flex-direction: column;
     gap: 10px;
-    margin-top: 18px;
   }
   a.link {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 13px 16px;
+    padding: 14px 18px;
     border-radius: 14px;
-    background: rgba(255,255,255,0.06);
-    border: 1px solid var(--border);
+    background: var(--glass-strong);
+    border: 1px solid rgba(255,255,255,0.55);
     color: var(--ink);
     text-decoration: none;
     font-weight: 600;
-    font-size: 14.5px;
-    transition: transform .18s ease, background .18s ease, border-color .18s ease;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
+    font-size: 15px;
+    transition: transform .18s ease, background .18s ease, box-shadow .18s ease;
+    box-shadow: 0 2px 8px -2px rgba(0,0,0,0.10);
   }
   a.link:hover {
     transform: translateY(-2px);
-    background: rgba(255,255,255,0.12);
-    border-color: var(--border-strong);
+    background: rgba(255,255,255,0.92);
+    box-shadow: 0 8px 20px -4px rgba(0,0,0,0.18);
   }
   a.link .logo {
     width: 36px;
@@ -185,63 +122,46 @@
     place-items: center;
     flex: 0 0 auto;
     overflow: hidden;
-    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 6px -2px rgba(0,0,0,0.15);
   }
   a.link .logo img { width: 28px; height: 28px; object-fit: contain; }
-  a.link .text { flex: 1; text-align: left; }
-  a.link .sub {
-    display: block;
-    font-size: 11.5px;
-    font-weight: 500;
-    color: var(--muted);
-    margin-top: 2px;
-    letter-spacing: 0.02em;
-  }
+  a.link .label { flex: 1; text-align: left; }
   a.link .arrow { color: var(--muted); flex: 0 0 auto; }
 
+  /* Fanvue stays the primary accent — but soft pink, not neon */
   a.link.primary {
-    background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
-    border: 1px solid rgba(255,255,255,0.20);
-    box-shadow: 0 12px 32px -8px rgba(255,77,141,0.45), 0 1px 0 rgba(255,255,255,0.18) inset;
+    background: linear-gradient(135deg, #f7a8c5, var(--accent));
+    border: 1px solid rgba(255,255,255,0.70);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.85) inset,
+      0 8px 20px -6px rgba(232,121,168,0.45);
   }
-  a.link.primary .logo { background: rgba(255,255,255,0.18); }
-  a.link.primary .arrow { color: rgba(255,255,255,0.85); }
+  a.link.primary:hover {
+    background: linear-gradient(135deg, #f8b4cd, #ed87b1);
+  }
+  a.link.primary .logo { background: rgba(255,255,255,0.85); }
 </style>
 </head>
 <body>
 
 <div class="wrap">
+  <h1 class="name">Rachel Leslie</h1>
+
   <div class="card">
-    <div class="avatar-wrap">
-      <div class="avatar"></div>
-      <span class="verified" aria-label="Verified">
-        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </div>
-    <h1 class="name">Rachel Leslie</h1>
-    <p class="handle">@therachelleslie</p>
-    <p class="bio">Official links. New posts every week.</p>
-
-    <div class="stats">
-      <div class="stat"><div class="n">120+</div><div class="l">Posts</div></div>
-      <div class="stat"><div class="n">14.2K</div><div class="l">Followers</div></div>
-      <div class="stat"><div class="n">3</div><div class="l">Platforms</div></div>
-    </div>
-
     <nav class="links" aria-label="Social links">
       <a class="link primary" href="https://fanvue.com/rachelleslie" target="_blank" rel="noopener">
         <span class="logo"><img src="assets/logos/fanvue-256.png" alt="Fanvue" /></span>
-        <span class="text">Fanvue<span class="sub">Subscribe. New content weekly.</span></span>
+        <span class="label">Fanvue</span>
         <span class="arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </a>
       <a class="link" href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">
         <span class="logo"><img src="assets/logos/instagram-256.png" alt="Instagram" /></span>
-        <span class="text">Instagram<span class="sub">@therachelleslie</span></span>
+        <span class="label">Instagram</span>
         <span class="arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </a>
       <a class="link" href="https://bsky.app/profile/therachelleslie.bsky.social" target="_blank" rel="noopener">
         <span class="logo"><img src="assets/logos/bsky-256.png" alt="Bluesky" /></span>
-        <span class="text">Bluesky<span class="sub">@therachelleslie.bsky.social</span></span>
+        <span class="label">Bluesky</span>
         <span class="arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
       </a>
     </nav>
