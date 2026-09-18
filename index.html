@@ -11,6 +11,7 @@
 <meta property="og:type" content="profile" />
 <link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://www.google.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
 <style>
@@ -38,50 +39,71 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* ---------- HERO (full-bleed photo + floating card) ---------- */
-  .hero {
+  /* ============================================================
+     HERO STAGE
+     Three viewport heights tall. Two photo layers stacked inside
+     a fixed background. Their opacities are driven by scroll
+     position via JS so they cross-fade as the user scrolls.
+     The card is `position: fixed` so it stays centered while
+     scrolling. The whole stage is `position: relative` only so
+     we can have an exit-fade to the dark gallery below.
+     ============================================================ */
+  .stage {
     position: relative;
     width: 100%;
-    height: 100vh;
-    height: 100svh;
-    display: grid;
-    place-items: center;
-    overflow: hidden;
-    isolation: isolate;
+    height: 300vh;             /* 3 viewports of scroll distance for the fade */
+    background: var(--bg);
   }
-  .hero-photo {
-    position: absolute;
+  .photo-stage {
+    position: fixed;
     inset: 0;
     z-index: 0;
-    background-image: var(--hero-img);
+    overflow: hidden;
+  }
+  .photo-layer {
+    position: absolute;
+    inset: 0;
     background-size: cover;
-    background-position: center 30%;
-    transform: scale(1.05);
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0;
+    transition: opacity .05s linear;
+    will-change: opacity;
   }
-  /* Readability overlay. Anchors the floating card and softens the photo behind it. */
-  .hero-photo::after {
+  .photo-layer.is-visible { opacity: 1; }
+  .photo-layer[data-bg="assets/photos/bg.jpg"]   { background-position: center 30%; }
+  .photo-layer[data-bg="assets/photos/bg-2.jpg"] { background-position: center 40%; }
+
+  /* Soft readability overlay across both photo layers */
+  .photo-stage::after {
     content: "";
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.0) 0%, rgba(11,11,20,0.20) 55%, rgba(11,11,20,0.70) 100%),
-      linear-gradient(180deg, rgba(11,11,20,0.10) 0%, rgba(11,11,20,0.05) 35%, rgba(11,11,20,0.30) 70%, rgba(11,11,20,0.75) 100%);
-  }
-  .hero-photo::before {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background:
-      radial-gradient(circle at 20% 80%, rgba(177,76,255,0.18), transparent 50%),
-      radial-gradient(circle at 80% 20%, rgba(255,77,141,0.18), transparent 50%);
-    z-index: 1;
+      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.05) 0%, rgba(11,11,20,0.30) 70%, rgba(11,11,20,0.75) 100%),
+      linear-gradient(180deg, rgba(11,11,20,0.05) 0%, rgba(11,11,20,0.02) 35%, rgba(11,11,20,0.20) 70%, rgba(11,11,20,0.65) 100%);
     pointer-events: none;
   }
 
-  /* The floating card. Lives inside the hero, centered. */
+  /* Subtle color washes for warmth */
+  .photo-stage::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(177,76,255,0.10), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,77,141,0.10), transparent 50%);
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  /* Floating, fixed card. Stays centered throughout the scroll. */
   .card {
-    position: relative;
-    z-index: 2;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 3;
     width: min(440px, calc(100% - 32px));
     padding: 28px 22px 22px;
     border-radius: 28px;
@@ -93,7 +115,9 @@
       0 1px 0 rgba(255,255,255,0.18) inset,
       0 20px 60px -10px rgba(0,0,0,0.55),
       0 40px 100px -30px rgba(0,0,0,0.7);
+    transition: opacity .3s ease;
   }
+  .card.is-hidden { opacity: 0; pointer-events: none; }
 
   .avatar-wrap {
     position: relative;
@@ -236,12 +260,36 @@
   a.link.primary .logo { background: rgba(255,255,255,0.18); }
   a.link.primary .arrow { color: rgba(255,255,255,0.85); }
 
+  /* Progress dots in the corner showing which photo you're on */
+  .progress {
+    position: fixed;
+    right: 18px;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    pointer-events: none;
+  }
+  .progress .pip {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.30);
+    transition: background .3s ease, transform .3s ease;
+  }
+  .progress .pip.is-active {
+    background: white;
+    transform: scale(1.4);
+  }
+
+  /* Scroll hint */
   .scroll-hint {
-    position: absolute;
+    position: fixed;
     bottom: 24px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 2;
+    z-index: 4;
     color: var(--muted);
     font-size: 11px;
     letter-spacing: 0.14em;
@@ -251,7 +299,9 @@
     align-items: center;
     gap: 6px;
     pointer-events: none;
+    transition: opacity .3s ease;
   }
+  .scroll-hint.is-faded { opacity: 0; }
   .scroll-hint .arrow-down {
     width: 18px; height: 28px;
     border: 1.5px solid rgba(255,255,255,0.6);
@@ -276,12 +326,14 @@
     100% { opacity: 0; transform: translate(-50%, 12px); }
   }
 
-  /* ---------- SCROLLABLE GALLERY (below hero) ---------- */
+  /* ============================================================
+     GALLERY (below the stage)
+     ============================================================ */
   .gallery {
     position: relative;
     padding: 80px 16px 100px;
     background: var(--bg);
-    z-index: 1;
+    z-index: 5;
   }
   .gallery::before {
     content: "";
@@ -352,7 +404,6 @@
     text-transform: uppercase;
     font-weight: 600;
   }
-
   @media (min-width: 640px) {
     .photo-stack {
       grid-template-columns: 1fr 1fr;
@@ -363,7 +414,6 @@
       aspect-ratio: 16 / 9;
     }
   }
-
   .footer {
     padding: 40px 16px 60px;
     text-align: center;
@@ -388,9 +438,16 @@
 </head>
 <body>
 
-<section class="hero">
-  <div class="hero-photo" id="heroPhoto"></div>
+<!-- Scroll stage (3 viewports tall, drives the photo cross-fade) -->
+<div class="stage" id="stage">
 
+  <!-- Fixed background with two stacked photo layers -->
+  <div class="photo-stage" id="photoStage">
+    <div class="photo-layer" id="photoA" data-bg="assets/photos/bg.jpg"></div>
+    <div class="photo-layer" id="photoB" data-bg="assets/photos/bg-2.jpg"></div>
+  </div>
+
+  <!-- Fixed, hovered card. Stays centered while scrolling through the stage. -->
   <div class="card" id="card">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar"></div>
@@ -427,12 +484,22 @@
     </nav>
   </div>
 
-  <div class="scroll-hint" aria-hidden="true">
+  <!-- Progress pips showing which photo you're on -->
+  <div class="progress" aria-hidden="true">
+    <span class="pip" id="pip0"></span>
+    <span class="pip" id="pip1"></span>
+    <span class="pip" id="pip2"></span>
+  </div>
+
+  <!-- Scroll hint, fades after first scroll -->
+  <div class="scroll-hint" id="scrollHint">
     <span>Scroll</span>
     <span class="arrow-down"></span>
   </div>
-</section>
 
+</div>
+
+<!-- Below the fold -->
 <section class="gallery">
   <div class="gallery-head">
     <p class="eyebrow">More</p>
@@ -458,12 +525,7 @@
 </div>
 
 <script>
-  const photos = {
-    hero:   'assets/photos/bg.jpg',
-    avatar: 'assets/photos/avatar.jpg',
-    stack:  Array.from({length: 8}, (_, i) => `assets/photos/photo-${i+1}.jpg`)
-  };
-
+  /* ---------- Photo loading (with fallback) ---------- */
   function tryLoad(src, ok) {
     const img = new Image();
     img.onload  = () => ok(img.src);
@@ -471,14 +533,28 @@
     img.src = src;
   }
 
-  tryLoad(photos.hero, ok => {
-    if (ok) document.documentElement.style.setProperty('--hero-img', `url('${ok}')`);
-  });
+  const photos = {
+    avatar: 'assets/photos/avatar.jpg',
+    stack:  Array.from({length: 8}, (_, i) => `assets/photos/photo-${i+1}.jpg`)
+  };
 
+  // Load avatar
   tryLoad(photos.avatar, ok => {
     if (ok) document.documentElement.style.setProperty('--avatar-img', `url('${ok}')`);
   });
 
+  // Load each photo layer independently. If a layer's file is missing,
+  // skip it and let the next visible one show.
+  ['photoA','photoB'].forEach(id => {
+    const el = document.getElementById(id);
+    if (!el) return;
+    const src = el.dataset.bg;
+    tryLoad(src, ok => {
+      if (ok) el.style.backgroundImage = `url('${ok}')`;
+    });
+  });
+
+  // Load gallery cards
   photos.stack.forEach((src, i) => {
     tryLoad(src, ok => {
       if (!ok) return;
@@ -490,6 +566,58 @@
       if (ph) ph.style.display = 'none';
     });
   });
+
+  /* ---------- Scroll-driven cross-fade ---------- */
+  // Photo A visible at scroll 0 -> fades out by halfway.
+  // Photo B fades in starting halfway, full at end of stage.
+  // The third pip represents the stage's last 1/3 where both are
+  // fully gone (transitioning to the gallery).
+
+  const photoA   = document.getElementById('photoA');
+  const photoB   = document.getElementById('photoB');
+  const stage    = document.getElementById('stage');
+  const card     = document.getElementById('card');
+  const pips     = [document.getElementById('pip0'), document.getElementById('pip1'), document.getElementById('pip2')];
+  const hint     = document.getElementById('scrollHint');
+
+  function onScroll() {
+    const rect = stage.getBoundingClientRect();
+    const stageHeight = stage.offsetHeight;
+    const viewportH = window.innerHeight;
+
+    // How far through the stage we are, from 0 to 1.
+    // 0 = stage top is at viewport top.
+    // 1 = stage bottom is at viewport bottom.
+    const raw = -rect.top / (stageHeight - viewportH);
+    const t = Math.max(0, Math.min(1, raw));
+
+    // Photo A: full at t=0, gone at t=0.5
+    const a = Math.max(0, 1 - t * 2);
+    // Photo B: starts at t=0.33, full at t=0.66
+    const b = Math.min(1, Math.max(0, (t - 0.33) / 0.33));
+
+    photoA.style.opacity = a;
+    photoB.style.opacity = b;
+
+    // Pips
+    pips[0].classList.toggle('is-active', t < 0.33);
+    pips[1].classList.toggle('is-active', t >= 0.33 && t < 0.66);
+    pips[2].classList.toggle('is-active', t >= 0.66);
+
+    // Card fades out near the end of the stage so the gallery appears cleanly.
+    // t > 0.85 -> fade card out
+    if (card) {
+      if (t > 0.85) card.classList.add('is-hidden');
+      else card.classList.remove('is-hidden');
+    }
+
+    // Scroll hint fades out once user starts moving
+    if (hint) hint.classList.toggle('is-faded', window.scrollY > 80);
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  onScroll();
 </script>
 
 </body>
