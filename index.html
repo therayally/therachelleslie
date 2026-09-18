@@ -8,7 +8,7 @@
 <link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Great+Vibes&display=swap" rel="stylesheet" />
 <style>
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
@@ -22,7 +22,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Soft dark scrim so the white button outlines stay readable.
+  /* Soft dark scrim so the white outlines stay readable.
      Keeps the watercolor visible but slightly toned. */
   body::before {
     content: "";
@@ -38,7 +38,7 @@
     z-index: 0;
   }
 
-  /* Banner at the top, z-index above the scrim. */
+  /* Banner at the top. */
   .banner {
     position: relative;
     z-index: 2;
@@ -60,9 +60,21 @@
   .wrap {
     position: relative;
     z-index: 2;
-    max-width: 480px;
+    max-width: 460px;
     margin: 0 auto;
-    padding: 12px 20px 28px;
+    padding: 16px 20px 28px;
+    text-align: center;
+  }
+
+  /* Short bio above the buttons. */
+  .bio {
+    margin: 0 0 22px;
+    text-align: center;
+    color: #fff;
+    font-size: 15px;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.45);
   }
 
   .links {
@@ -71,8 +83,7 @@
     gap: 14px;
   }
 
-  /* Big, see-through white-outlined boxes. The background watercolor shows
-     through them — that's the whole look. */
+  /* Big, see-through white-outlined boxes. */
   a.link {
     display: flex;
     align-items: center;
@@ -113,6 +124,49 @@
     box-shadow: 0 12px 28px -8px rgba(0,0,0,0.5);
   }
 
+  /* ----- About Me section at the bottom ----- */
+  .about {
+    position: relative;
+    z-index: 2;
+    padding: 40px 24px 32px;
+    text-align: center;
+  }
+  .about .heading {
+    font-family: 'Great Vibes', 'Snell Roundhand', cursive;
+    font-weight: 400;
+    font-size: 64px;
+    line-height: 1.2;
+    color: #fff;
+    margin: 0 0 18px;
+    padding-top: 0.15em;       /* room for cursive descenders */
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+  .about .body {
+    color: rgba(255,255,255,0.92);
+    font-size: 15px;
+    line-height: 1.65;
+    margin: 0 auto 22px;
+    max-width: 360px;
+    text-shadow: 0 1px 8px rgba(0,0,0,0.45);
+  }
+  .about .ask {
+    font-family: 'Great Vibes', 'Snell Roundhand', cursive;
+    font-weight: 400;
+    font-size: 42px;
+    line-height: 1.3;
+    color: #fff;
+    margin: 8px 0 0;
+    padding-top: 0.15em;
+    text-shadow: 0 2px 12px rgba(0,0,0,0.5);
+  }
+  .about .heart {
+    display: inline-block;
+    margin-left: 6px;
+    transform: translateY(6px);
+    color: #ff7aa8;
+    vertical-align: middle;
+  }
+
   .footer {
     position: relative;
     z-index: 2;
@@ -134,6 +188,8 @@
 <div class="banner-fade"></div>
 
 <div class="wrap">
+  <p class="bio">Sharing my world, one photo at a time.</p>
+
   <nav class="links" aria-label="Social links">
     <a class="link" href="https://fanvue.com/rachelleslie" target="_blank" rel="noopener">
       <span class="logo"><img src="assets/logos/fanvue-256.png" alt="Fanvue" /></span>
@@ -153,6 +209,12 @@
     </a>
   </nav>
 </div>
+
+<section class="about">
+  <h2 class="heading">About Me</h2>
+  <p class="body">Thanks for stopping by. Every share, like, and subscribe means the world to me and lets me keep creating the kind of content you came here for.</p>
+  <p class="ask">Please consider spoiling me <span class="heart">&hearts;</span></p>
+</section>
 
 <div class="footer">2026 Rachel Leslie</div>
 
