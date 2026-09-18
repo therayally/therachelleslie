@@ -12,94 +12,103 @@
 <link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #0b0b14;
-    --bg-2: #14141f;
     --ink: #f5f5f7;
-    --muted: #a1a1aa;
-    --border: rgba(255,255,255,0.08);
-    --glass: rgba(255,255,255,0.06);
-    --glass-2: rgba(255,255,255,0.10);
+    --muted: rgba(245,245,247,0.78);
+    --glass: rgba(11,11,20,0.55);
+    --border: rgba(255,255,255,0.14);
+    --border-strong: rgba(255,255,255,0.22);
     --accent-1: #ff4d8d;
     --accent-2: #b14cff;
     --accent-3: #4cc9ff;
+    --serif: 'Fraunces', Georgia, serif;
   }
   * { box-sizing: border-box; }
   html, body { margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--ink);
     background: var(--bg);
-    min-height: 100vh;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* Background photo layer */
-  .bg-photo {
-    position: fixed;
+  /* ---------- HERO (full-bleed photo + floating card) ---------- */
+  .hero {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    height: 100svh;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    isolation: isolate;
+  }
+  .hero-photo {
+    position: absolute;
     inset: 0;
     z-index: 0;
-    background:
-      linear-gradient(180deg, rgba(11,11,20,0.55) 0%, rgba(11,11,20,0.85) 60%, rgba(11,11,20,0.98) 100%),
-      radial-gradient(circle at 20% 20%, rgba(177,76,255,0.25), transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(255,77,141,0.25), transparent 50%),
-      var(--bg);
+    background-image: var(--hero-img);
     background-size: cover;
-    background-position: center;
-    filter: blur(0px);
+    background-position: center 30%;
+    transform: scale(1.05);
   }
-  .bg-photo::before {
-    content: "";
-    position: absolute;
-    inset: -40px;
-    background-image: var(--bg-img);
-    background-size: cover;
-    background-position: center;
-    filter: blur(28px) saturate(1.1);
-    transform: scale(1.1);
-    opacity: 0.85;
-  }
-  .bg-photo::after {
+  /* Readability overlay. Anchors the floating card and softens the photo behind it. */
+  .hero-photo::after {
     content: "";
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(11,11,20,0.45) 0%, rgba(11,11,20,0.78) 55%, rgba(11,11,20,1) 100%);
+      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.0) 0%, rgba(11,11,20,0.20) 55%, rgba(11,11,20,0.70) 100%),
+      linear-gradient(180deg, rgba(11,11,20,0.10) 0%, rgba(11,11,20,0.05) 35%, rgba(11,11,20,0.30) 70%, rgba(11,11,20,0.75) 100%);
   }
-
-  /* Layout */
-  main {
-    position: relative;
+  .hero-photo::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(circle at 20% 80%, rgba(177,76,255,0.18), transparent 50%),
+      radial-gradient(circle at 80% 20%, rgba(255,77,141,0.18), transparent 50%);
     z-index: 1;
-    max-width: 480px;
-    margin: 0 auto;
-    padding: 56px 20px 96px;
+    pointer-events: none;
   }
 
-  /* Hero */
-  .hero {
-    text-align: center;
-    margin-bottom: 32px;
+  /* The floating card. Lives inside the hero, centered. */
+  .card {
+    position: relative;
+    z-index: 2;
+    width: min(440px, calc(100% - 32px));
+    padding: 28px 22px 22px;
+    border-radius: 28px;
+    background: var(--glass);
+    backdrop-filter: blur(22px) saturate(1.4);
+    -webkit-backdrop-filter: blur(22px) saturate(1.4);
+    border: 1px solid var(--border);
+    box-shadow:
+      0 1px 0 rgba(255,255,255,0.18) inset,
+      0 20px 60px -10px rgba(0,0,0,0.55),
+      0 40px 100px -30px rgba(0,0,0,0.7);
   }
+
   .avatar-wrap {
     position: relative;
-    width: 132px;
-    height: 132px;
-    margin: 0 auto 18px;
+    width: 110px;
+    height: 110px;
+    margin: 0 auto 14px;
     border-radius: 50%;
     padding: 3px;
     background: linear-gradient(135deg, var(--accent-1), var(--accent-2), var(--accent-3));
-    box-shadow: 0 12px 40px -10px rgba(177,76,255,0.55), 0 0 0 1px rgba(255,255,255,0.06);
+    box-shadow: 0 12px 36px -8px rgba(177,76,255,0.55);
   }
   .avatar {
-    width: 100%;
-    height: 100%;
+    width: 100%; height: 100%;
     border-radius: 50%;
-    background: var(--bg-2);
+    background: var(--bg);
     background-image: var(--avatar-img);
     background-size: cover;
     background-position: center;
@@ -107,86 +116,94 @@
   }
   .verified {
     position: absolute;
-    right: 4px;
-    bottom: 4px;
-    width: 32px;
-    height: 32px;
+    right: 2px;
+    bottom: 2px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
     background: var(--accent-2);
     border: 3px solid var(--bg);
     display: grid;
     place-items: center;
   }
-  .verified svg { width: 16px; height: 16px; color: white; }
+  .verified svg { width: 14px; height: 14px; color: white; }
 
-  h1.name {
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.02em;
-    margin: 0 0 6px;
-    background: linear-gradient(135deg, #ffffff 0%, #f5f5f7 50%, #ffffff 100%);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+  .name {
+    margin: 0;
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 30px;
+    letter-spacing: -0.01em;
+    text-align: center;
+    line-height: 1.1;
   }
   .handle {
+    margin: 4px 0 0;
+    text-align: center;
     color: var(--muted);
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
-    letter-spacing: 0.02em;
-    margin: 0;
+    letter-spacing: 0.04em;
   }
   .bio {
-    color: var(--ink);
-    font-size: 15px;
-    line-height: 1.55;
     margin: 14px auto 0;
-    max-width: 360px;
+    max-width: 320px;
+    text-align: center;
+    color: var(--ink);
+    font-size: 14px;
+    line-height: 1.55;
     opacity: 0.92;
   }
 
-  /* Stats row */
   .stats {
     display: flex;
     justify-content: center;
-    gap: 28px;
-    margin-top: 20px;
+    gap: 26px;
+    margin: 18px auto 0;
     padding: 14px 0;
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
   .stat { text-align: center; }
-  .stat .n { font-weight: 700; font-size: 17px; letter-spacing: -0.01em; }
-  .stat .l { color: var(--muted); font-size: 12px; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
+  .stat .n {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.01em;
+  }
+  .stat .l {
+    color: var(--muted);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.10em;
+    margin-top: 2px;
+  }
 
-  /* Link buttons */
   .links {
     display: flex;
     flex-direction: column;
-    gap: 12px;
-    margin-top: 28px;
+    gap: 10px;
+    margin-top: 18px;
   }
   a.link {
     display: flex;
     align-items: center;
     gap: 14px;
-    padding: 14px 18px;
-    border-radius: 16px;
-    background: var(--glass);
+    padding: 13px 16px;
+    border-radius: 14px;
+    background: rgba(255,255,255,0.06);
     border: 1px solid var(--border);
-    backdrop-filter: blur(14px);
-    -webkit-backdrop-filter: blur(14px);
     color: var(--ink);
     text-decoration: none;
     font-weight: 600;
-    font-size: 15px;
+    font-size: 14.5px;
     transition: transform .18s ease, background .18s ease, border-color .18s ease;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 8px 24px -10px rgba(0,0,0,0.4);
+    box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset;
   }
   a.link:hover {
     transform: translateY(-2px);
-    background: var(--glass-2);
-    border-color: rgba(255,255,255,0.16);
+    background: rgba(255,255,255,0.12);
+    border-color: var(--border-strong);
   }
   a.link .logo {
     width: 36px;
@@ -197,104 +214,188 @@
     place-items: center;
     flex: 0 0 auto;
     overflow: hidden;
-    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.3);
+    box-shadow: 0 4px 12px -4px rgba(0,0,0,0.4);
   }
   a.link .logo img { width: 28px; height: 28px; object-fit: contain; }
   a.link .text { flex: 1; text-align: left; }
-  a.link .sub { display: block; font-size: 12px; font-weight: 500; color: var(--muted); margin-top: 2px; letter-spacing: 0.02em; }
+  a.link .sub {
+    display: block;
+    font-size: 11.5px;
+    font-weight: 500;
+    color: var(--muted);
+    margin-top: 2px;
+    letter-spacing: 0.02em;
+  }
   a.link .arrow { color: var(--muted); flex: 0 0 auto; }
 
-  /* Featured/Primary button */
   a.link.primary {
     background: linear-gradient(135deg, var(--accent-1) 0%, var(--accent-2) 100%);
-    border: 1px solid rgba(255,255,255,0.18);
+    border: 1px solid rgba(255,255,255,0.20);
     box-shadow: 0 12px 32px -8px rgba(255,77,141,0.45), 0 1px 0 rgba(255,255,255,0.18) inset;
   }
-  a.link.primary .logo {
-    background: rgba(255,255,255,0.18);
-    backdrop-filter: blur(8px);
-  }
+  a.link.primary .logo { background: rgba(255,255,255,0.18); }
   a.link.primary .arrow { color: rgba(255,255,255,0.85); }
 
-  /* Photo grid (IG/BSky style) */
-  .grid-wrap {
-    margin-top: 40px;
-  }
-  .grid-head {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 14px;
-  }
-  .grid-head h2 {
-    margin: 0;
-    font-size: 13px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.14em;
+  .scroll-hint {
+    position: absolute;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 2;
     color: var(--muted);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    pointer-events: none;
   }
-  .grid-head a { color: var(--accent-3); font-size: 12px; font-weight: 600; text-decoration: none; letter-spacing: 0.04em; text-transform: uppercase; }
-  .photo-grid {
+  .scroll-hint .arrow-down {
+    width: 18px; height: 28px;
+    border: 1.5px solid rgba(255,255,255,0.6);
+    border-radius: 10px;
+    position: relative;
+  }
+  .scroll-hint .arrow-down::after {
+    content: "";
+    position: absolute;
+    top: 5px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 3px;
+    height: 6px;
+    background: white;
+    border-radius: 2px;
+    animation: scrollDot 1.6s ease-in-out infinite;
+  }
+  @keyframes scrollDot {
+    0%   { opacity: 0; transform: translate(-50%, 0); }
+    40%  { opacity: 1; }
+    100% { opacity: 0; transform: translate(-50%, 12px); }
+  }
+
+  /* ---------- SCROLLABLE GALLERY (below hero) ---------- */
+  .gallery {
+    position: relative;
+    padding: 80px 16px 100px;
+    background: var(--bg);
+    z-index: 1;
+  }
+  .gallery::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 80px;
+    background: linear-gradient(180deg, rgba(11,11,20,0.0), var(--bg));
+    pointer-events: none;
+  }
+  .gallery-head {
+    max-width: 720px;
+    margin: 0 auto 32px;
+    padding: 0 8px;
+    text-align: center;
+  }
+  .gallery-head .eyebrow {
+    color: var(--accent-3);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    margin: 0 0 8px;
+  }
+  .gallery-head h2 {
+    font-family: var(--serif);
+    font-weight: 400;
+    font-size: 28px;
+    letter-spacing: -0.015em;
+    margin: 0;
+    line-height: 1.15;
+  }
+  .gallery-head p {
+    margin: 10px auto 0;
+    max-width: 440px;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.55;
+  }
+  .photo-stack {
+    max-width: 720px;
+    margin: 0 auto;
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 4px;
-    border-radius: 14px;
-    overflow: hidden;
+    grid-template-columns: 1fr;
+    gap: 18px;
   }
-  .photo-grid .cell {
-    aspect-ratio: 1 / 1;
-    background: var(--bg-2);
-    background-image: var(--cell-img);
+  .photo-card {
+    position: relative;
+    border-radius: 18px;
+    overflow: hidden;
+    background: #14141f;
+    border: 1px solid var(--border);
+    box-shadow: 0 18px 50px -16px rgba(0,0,0,0.7);
+    aspect-ratio: 4 / 5;
+  }
+  .photo-card .img {
+    position: absolute; inset: 0;
+    background-image: var(--card-img);
     background-size: cover;
     background-position: center;
-    border: 1px solid rgba(255,255,255,0.04);
-    cursor: pointer;
-    transition: transform .25s ease;
   }
-  .photo-grid .cell:hover { transform: scale(1.03); }
+  .photo-card .placeholder {
+    position: absolute; inset: 0;
+    display: grid;
+    place-items: center;
+    color: rgba(255,255,255,0.25);
+    font-size: 13px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
 
-  /* Footer */
-  footer {
-    margin-top: 56px;
+  @media (min-width: 640px) {
+    .photo-stack {
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+    .photo-card:nth-child(3n+1) {
+      grid-column: span 2;
+      aspect-ratio: 16 / 9;
+    }
+  }
+
+  .footer {
+    padding: 40px 16px 60px;
     text-align: center;
-    color: var(--muted);
-    font-size: 12px;
-    letter-spacing: 0.04em;
+    background: var(--bg);
   }
-  footer .dot {
-    display: inline-block;
-    width: 4px;
-    height: 4px;
-    border-radius: 50%;
-    background: var(--accent-1);
-    margin: 0 8px;
-    vertical-align: middle;
+  .footer a {
+    color: var(--accent-3);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-decoration: none;
+    text-transform: uppercase;
   }
-  footer a { color: var(--muted); text-decoration: none; }
-  footer a:hover { color: var(--ink); }
-
-  /* Mobile fine-tune */
-  @media (max-width: 480px) {
-    main { padding: 40px 18px 80px; }
-    h1.name { font-size: 26px; }
+  .footer .meta {
+    display: block;
+    margin-top: 18px;
+    color: rgba(245,245,247,0.40);
+    font-size: 11.5px;
+    letter-spacing: 0.06em;
   }
 </style>
 </head>
 <body>
 
-<!-- Background photo: drop your photos as assets/hero-1.jpg, hero-2.jpg and uncomment -->
-<div class="bg-photo" id="bgPhoto"></div>
+<section class="hero">
+  <div class="hero-photo" id="heroPhoto"></div>
 
-<main>
-
-  <section class="hero">
+  <div class="card" id="card">
     <div class="avatar-wrap">
       <div class="avatar" id="avatar"></div>
       <span class="verified" aria-label="Verified">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M5 12.5l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
     </div>
     <h1 class="name">Rachel Leslie</h1>
@@ -302,77 +403,67 @@
     <p class="bio">Official links. New posts every week.</p>
 
     <div class="stats">
-      <div class="stat"><div class="n" id="statPosts">120+</div><div class="l">Posts</div></div>
-      <div class="stat"><div class="n" id="statFollowers">14.2K</div><div class="l">Followers</div></div>
+      <div class="stat"><div class="n">120+</div><div class="l">Posts</div></div>
+      <div class="stat"><div class="n">14.2K</div><div class="l">Followers</div></div>
       <div class="stat"><div class="n">3</div><div class="l">Platforms</div></div>
     </div>
-  </section>
 
-  <nav class="links" aria-label="Social links">
-    <a class="link primary" href="https://fanvue.com/rachelleslie" target="_blank" rel="noopener">
-      <span class="logo"><img src="assets/logos/fanvue-256.png" alt="Fanvue" /></span>
-      <span class="text">Fanvue<span class="sub">Subscribe. New content weekly.</span></span>
-      <span class="arrow" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </a>
+    <nav class="links" aria-label="Social links">
+      <a class="link primary" href="https://fanvue.com/rachelleslie" target="_blank" rel="noopener">
+        <span class="logo"><img src="assets/logos/fanvue-256.png" alt="Fanvue" /></span>
+        <span class="text">Fanvue<span class="sub">Subscribe. New content weekly.</span></span>
+        <span class="arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="link" href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">
+        <span class="logo"><img src="assets/logos/instagram-256.png" alt="Instagram" /></span>
+        <span class="text">Instagram<span class="sub">@therachelleslie</span></span>
+        <span class="arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+      <a class="link" href="https://bsky.app/profile/therachelleslie.bsky.social" target="_blank" rel="noopener">
+        <span class="logo"><img src="assets/logos/bsky-256.png" alt="Bluesky" /></span>
+        <span class="text">Bluesky<span class="sub">@therachelleslie.bsky.social</span></span>
+        <span class="arrow"><svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+      </a>
+    </nav>
+  </div>
 
-    <a class="link" href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">
-      <span class="logo"><img src="assets/logos/instagram-256.png" alt="Instagram" /></span>
-      <span class="text">Instagram<span class="sub">@therachelleslie</span></span>
-      <span class="arrow" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </a>
+  <div class="scroll-hint" aria-hidden="true">
+    <span>Scroll</span>
+    <span class="arrow-down"></span>
+  </div>
+</section>
 
-    <a class="link" href="https://bsky.app/profile/therachelleslie.bsky.social" target="_blank" rel="noopener">
-      <span class="logo"><img src="assets/logos/bsky-256.png" alt="Bluesky" /></span>
-      <span class="text">Bluesky<span class="sub">@therachelleslie.bsky.social</span></span>
-      <span class="arrow" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      </span>
-    </a>
-  </nav>
+<section class="gallery">
+  <div class="gallery-head">
+    <p class="eyebrow">More</p>
+    <h2>Recent posts</h2>
+    <p>Tap any image to open the original on Instagram.</p>
+  </div>
 
-  <section class="grid-wrap">
-    <div class="grid-head">
-      <h2>Recent</h2>
-      <a href="https://instagram.com/therachelleslie" target="_blank" rel="noopener">View all</a>
-    </div>
-    <div class="photo-grid" id="photoGrid">
-      <div class="cell" id="cell0"></div>
-      <div class="cell" id="cell1"></div>
-      <div class="cell" id="cell2"></div>
-      <div class="cell" id="cell3"></div>
-      <div class="cell" id="cell4"></div>
-      <div class="cell" id="cell5"></div>
-    </div>
-  </section>
+  <div class="photo-stack" id="photoStack">
+    <div class="photo-card" data-n="1"><div class="img"></div><div class="placeholder">Photo 1</div></div>
+    <div class="photo-card" data-n="2"><div class="img"></div><div class="placeholder">Photo 2</div></div>
+    <div class="photo-card" data-n="3"><div class="img"></div><div class="placeholder">Photo 3</div></div>
+    <div class="photo-card" data-n="4"><div class="img"></div><div class="placeholder">Photo 4</div></div>
+    <div class="photo-card" data-n="5"><div class="img"></div><div class="placeholder">Photo 5</div></div>
+    <div class="photo-card" data-n="6"><div class="img"></div><div class="placeholder">Photo 6</div></div>
+    <div class="photo-card" data-n="7"><div class="img"></div><div class="placeholder">Photo 7</div></div>
+    <div class="photo-card" data-n="8"><div class="img"></div><div class="placeholder">Photo 8</div></div>
+  </div>
+</section>
 
-  <footer>
-    <span>2026 Rachel Leslie</span>
-    <span class="dot"></span>
-    <a href="mailto:contact@rachelleslie.com">contact@rachelleslie.com</a>
-  </footer>
-
-</main>
+<div class="footer">
+  <a href="#" onclick="window.scrollTo({top:0,behavior:'smooth'});return false;">Back to top</a>
+  <span class="meta">2026 Rachel Leslie. All rights reserved.</span>
+</div>
 
 <script>
-  // Photo slots. Drop your JPGs into /assets/ and they'll auto-attach.
-  // Just name them bg.jpg (background), avatar.jpg (profile pic), and grid-1.jpg ... grid-6.jpg.
   const photos = {
-    bg:    'assets/photos/bg.jpg',
-    avatar:'assets/photos/avatar.jpg',
-    grid:  ['grid-1','grid-2','grid-3','grid-4','grid-5','grid-6'].map(n => `assets/photos/${n}.jpg`)
+    hero:   'assets/photos/bg.jpg',
+    avatar: 'assets/photos/avatar.jpg',
+    stack:  Array.from({length: 8}, (_, i) => `assets/photos/photo-${i+1}.jpg`)
   };
 
-  function apply(src, target) {
-    target.style.backgroundImage = `url('${src}')`;
-    target.style.backgroundSize  = 'cover';
-    target.style.backgroundPosition = 'center';
-  }
-
-  // Try-load with one fallback each. If a file is missing, the slot stays as a styled dark cell.
   function tryLoad(src, ok) {
     const img = new Image();
     img.onload  = () => ok(img.src);
@@ -380,23 +471,23 @@
     img.src = src;
   }
 
-  // Background
-  tryLoad(photos.bg, ok => {
-    if (ok) document.documentElement.style.setProperty('--bg-img', `url('${ok}')`);
+  tryLoad(photos.hero, ok => {
+    if (ok) document.documentElement.style.setProperty('--hero-img', `url('${ok}')`);
   });
 
-  // Avatar
   tryLoad(photos.avatar, ok => {
     if (ok) document.documentElement.style.setProperty('--avatar-img', `url('${ok}')`);
   });
 
-  // Photo grid
-  photos.grid.forEach((src, i) => {
+  photos.stack.forEach((src, i) => {
     tryLoad(src, ok => {
-      if (ok) {
-        const el = document.getElementById('cell' + i);
-        if (el) el.style.backgroundImage = `url('${ok}')`;
-      }
+      if (!ok) return;
+      const card = document.querySelector(`.photo-card[data-n="${i+1}"]`);
+      if (!card) return;
+      const imgDiv = card.querySelector('.img');
+      const ph = card.querySelector('.placeholder');
+      imgDiv.style.backgroundImage = `url('${ok}')`;
+      if (ph) ph.style.display = 'none';
     });
   });
 </script>
