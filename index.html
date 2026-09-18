@@ -3,21 +3,17 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-<meta name="theme-color" content="#0b0b14" />
 <title>Rachel Leslie</title>
 <meta name="description" content="Rachel Leslie. Official links." />
-<meta property="og:title" content="Rachel Leslie" />
-<meta property="og:description" content="Official links" />
-<meta property="og:type" content="profile" />
 <link rel="icon" type="image/png" href="assets/logos/fanvue.png" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,400;9..144,500&display=swap" rel="stylesheet" />
 <style>
   :root {
     --bg: #0b0b14;
     --ink: #f5f5f7;
-    --muted: rgba(245,245,247,0.78);
+    --muted: rgba(245,245,247,0.80);
     --glass: rgba(11,11,20,0.55);
     --border: rgba(255,255,255,0.14);
     --border-strong: rgba(255,255,255,0.22);
@@ -27,61 +23,38 @@
     --serif: 'Fraunces', Georgia, serif;
   }
   * { box-sizing: border-box; }
-  html, body { margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+  html, body { margin: 0; padding: 0; height: 100%; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     color: var(--ink);
-    background: var(--bg);
-    overflow-x: hidden;
+    background: var(--bg) url('assets/photos/bg.jpg') center/cover no-repeat;
+    min-height: 100vh;
+    min-height: 100svh;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
 
-  /* ============================================================
-     BLURRED FIXED BACKGROUND
-     One photo, slight blur, full viewport. Stays put while the
-     page scrolls past it.
-     ============================================================ */
-  .bg {
+  /* Dark gradient overlay so the card stays readable */
+  body::before {
+    content: "";
     position: fixed;
     inset: 0;
-    z-index: 0;
-    overflow: hidden;
-    background: var(--bg);
-  }
-  .bg .img {
-    position: absolute;
-    inset: -20px;          /* bleed the edges so the blur doesn't show a hard frame */
-    background-image: var(--bg-img);
-    background-size: cover;
-    background-position: center 30%;
-    filter: blur(18px) saturate(1.05);
-    transform: scale(1.05);
-  }
-  .bg::after {
-    content: "";
-    position: absolute;
-    inset: 0;
     background:
-      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.05) 0%, rgba(11,11,20,0.25) 70%, rgba(11,11,20,0.55) 100%),
-      linear-gradient(180deg, rgba(11,11,20,0.10) 0%, rgba(11,11,20,0.20) 50%, rgba(11,11,20,0.50) 100%);
+      radial-gradient(ellipse at 50% 45%, rgba(11,11,20,0.10) 0%, rgba(11,11,20,0.45) 70%, rgba(11,11,20,0.85) 100%),
+      linear-gradient(180deg, rgba(11,11,20,0.20) 0%, rgba(11,11,20,0.40) 50%, rgba(11,11,20,0.80) 100%);
+    pointer-events: none;
   }
 
-  /* ============================================================
-     STICKY CARD
-     Sits centered in the viewport the whole time. position: sticky
-     inside a tall section keeps it in place without covering the
-     gallery section below.
-     ============================================================ */
-  .card-wrap {
+  .wrap {
     position: relative;
-    z-index: 2;
+    z-index: 1;
     min-height: 100vh;
+    min-height: 100svh;
     display: grid;
     place-items: center;
-    padding: 56px 16px;
+    padding: 32px 16px;
   }
+
   .card {
     width: min(440px, calc(100% - 32px));
     padding: 28px 22px 22px;
@@ -109,10 +82,7 @@
   .avatar {
     width: 100%; height: 100%;
     border-radius: 50%;
-    background: var(--bg);
-    background-image: var(--avatar-img);
-    background-size: cover;
-    background-position: center;
+    background: var(--bg) url('assets/photos/avatar.jpg') center/cover no-repeat;
     border: 3px solid var(--bg);
   }
   .verified {
@@ -236,139 +206,14 @@
   }
   a.link.primary .logo { background: rgba(255,255,255,0.18); }
   a.link.primary .arrow { color: rgba(255,255,255,0.85); }
-
-  /* Scroll hint */
-  .scroll-hint {
-    position: absolute;
-    bottom: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 3;
-    color: var(--muted);
-    font-size: 11px;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    pointer-events: none;
-  }
-  .scroll-hint .arrow-down {
-    width: 18px; height: 28px;
-    border: 1.5px solid rgba(255,255,255,0.6);
-    border-radius: 10px;
-    position: relative;
-  }
-  .scroll-hint .arrow-down::after {
-    content: "";
-    position: absolute;
-    top: 5px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 3px;
-    height: 6px;
-    background: white;
-    border-radius: 2px;
-    animation: scrollDot 1.6s ease-in-out infinite;
-  }
-  @keyframes scrollDot {
-    0%   { opacity: 0; transform: translate(-50%, 0); }
-    40%  { opacity: 1; }
-    100% { opacity: 0; transform: translate(-50%, 12px); }
-  }
-
-  /* ============================================================
-     PHOTO GALLERY (below the fold)
-     A single column of stacked photos. Each one takes its real
-     height. Add as many as you want; the page just grows.
-     ============================================================ */
-  .gallery {
-    position: relative;
-    z-index: 4;
-    background: var(--bg);
-    padding: 32px 0 0;
-  }
-  .gallery-head {
-    max-width: 720px;
-    margin: 0 auto 28px;
-    padding: 0 16px;
-    text-align: center;
-  }
-  .gallery-head .eyebrow {
-    color: var(--accent-3);
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
-    margin: 0 0 8px;
-  }
-  .gallery-head h2 {
-    font-family: var(--serif);
-    font-weight: 400;
-    font-size: 26px;
-    letter-spacing: -0.015em;
-    margin: 0;
-    line-height: 1.15;
-  }
-  .gallery-head p {
-    margin: 8px auto 0;
-    max-width: 440px;
-    color: var(--muted);
-    font-size: 14px;
-    line-height: 1.55;
-  }
-  .photo-stack {
-    display: flex;
-    flex-direction: column;
-    gap: 4px;          /* tight stack like an IG profile */
-  }
-  .photo {
-    position: relative;
-    width: 100%;
-    background: #14141f;
-    background-image: var(--card-img);
-    background-size: cover;
-    background-position: center;
-    /* Aspect ratio set by the image itself via JS (data-aspect attribute)
-       so each photo renders at its natural shape. */
-  }
-  .photo .placeholder {
-    position: absolute; inset: 0;
-    display: grid;
-    place-items: center;
-    color: rgba(255,255,255,0.25);
-    font-size: 13px;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    font-weight: 600;
-  }
-
-  .footer {
-    padding: 40px 16px 60px;
-    text-align: center;
-    background: var(--bg);
-  }
-  .footer .meta {
-    color: rgba(245,245,247,0.40);
-    font-size: 11.5px;
-    letter-spacing: 0.06em;
-  }
 </style>
 </head>
 <body>
 
-<!-- Fixed blurred background photo. Single image. -->
-<div class="bg">
-  <div class="img" id="bgImg"></div>
-</div>
-
-<!-- Hero: card sits centered in a viewport-tall section.
-     Below it the gallery takes over. -->
-<section class="card-wrap">
+<div class="wrap">
   <div class="card">
     <div class="avatar-wrap">
-      <div class="avatar" id="avatar"></div>
+      <div class="avatar"></div>
       <span class="verified" aria-label="Verified">
         <svg viewBox="0 0 24 24" fill="none"><path d="M5 12.5l4 4L19 7" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </span>
@@ -401,85 +246,7 @@
       </a>
     </nav>
   </div>
-
-  <div class="scroll-hint" aria-hidden="true">
-    <span>Scroll for more</span>
-    <span class="arrow-down"></span>
-  </div>
-</section>
-
-<!-- Below the fold: stacked photos. Add as many as you want. -->
-<section class="gallery">
-  <div class="gallery-head">
-    <p class="eyebrow">More</p>
-    <h2>Recent posts</h2>
-  </div>
-
-  <div class="photo-stack" id="photoStack">
-    <div class="photo" data-n="1"><div class="placeholder">Photo 1</div></div>
-    <div class="photo" data-n="2"><div class="placeholder">Photo 2</div></div>
-    <div class="photo" data-n="3"><div class="placeholder">Photo 3</div></div>
-    <div class="photo" data-n="4"><div class="placeholder">Photo 4</div></div>
-    <div class="photo" data-n="5"><div class="placeholder">Photo 5</div></div>
-    <div class="photo" data-n="6"><div class="placeholder">Photo 6</div></div>
-    <div class="photo" data-n="7"><div class="placeholder">Photo 7</div></div>
-    <div class="photo" data-n="8"><div class="placeholder">Photo 8</div></div>
-    <div class="photo" data-n="9"><div class="placeholder">Photo 9</div></div>
-    <div class="photo" data-n="10"><div class="placeholder">Photo 10</div></div>
-  </div>
-</section>
-
-<div class="footer">
-  <span class="meta">2026 Rachel Leslie. All rights reserved.</span>
 </div>
-
-<script>
-  /* ---------- Photo loading ---------- */
-  // Background photo (single image, blurred). If missing the page
-  // just shows the dark background color.
-  const bgImg = document.getElementById('bgImg');
-  const bgImgLoader = new Image();
-  bgImgLoader.onload = () => {
-    document.documentElement.style.setProperty('--bg-img', `url('${bgImgLoader.src}')`);
-  };
-  bgImgLoader.onerror = () => {
-    // No background photo: leave the dark theme.
-  };
-  bgImgLoader.src = 'assets/photos/bg.jpg';
-
-  // Avatar
-  const avatarLoader = new Image();
-  avatarLoader.onload = () => {
-    document.documentElement.style.setProperty('--avatar-img', `url('${avatarLoader.src}')`);
-  };
-  avatarLoader.src = 'assets/photos/avatar.jpg';
-
-  // Gallery photos. Each photo's actual aspect ratio is read from
-  // the image so it renders at its real shape. No cropping, no
-  // forced 4:5. Just the photo, full-width.
-  document.querySelectorAll('.photo').forEach(el => {
-    const n = el.dataset.n;
-    const src = `assets/photos/photo-${n}.jpg`;
-    const img = new Image();
-    img.onload = () => {
-      el.style.backgroundImage = `url('${src}')`;
-      // Use natural aspect ratio so the photo is undistorted
-      const ratio = img.naturalHeight / img.naturalWidth;
-      el.style.paddingBottom = (ratio * 100).toFixed(2) + '%';
-      const ph = el.querySelector('.placeholder');
-      if (ph) ph.style.display = 'none';
-    };
-    img.onerror = () => { /* leave placeholder */ };
-    img.src = src;
-  });
-
-  /* ---------- Scroll hint fade ---------- */
-  const hint = document.querySelector('.scroll-hint');
-  window.addEventListener('scroll', () => {
-    if (!hint) return;
-    hint.style.opacity = window.scrollY > 80 ? '0' : '1';
-  }, { passive: true });
-</script>
 
 </body>
 </html>
